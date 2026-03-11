@@ -56,6 +56,7 @@ public class OwnerSystem {
             System.out.print("\n                  OWNER MENU");
             System.out.print("\n=================================================");
             System.out.print("\n1. Add New Car");
+            System.out.print("\n2. Display All Cars");
             System.err.print("\n8. Logout");
             System.out.print("\n=================================================");
 
@@ -74,6 +75,11 @@ public class OwnerSystem {
                 case 1:
                     addNewCar();
                     break;
+
+                case 2:
+                    displayAllCars();
+                    break;
+
                 case 8:
                     System.out.print("\nLogging out...");
                     System.out.print("\nReturning to Main Menu...\n");
@@ -88,15 +94,31 @@ public class OwnerSystem {
 
     void addNewCar() {
         Scanner input = new Scanner(System.in);
-        String carID, carName, TcarType, carType;
+        String TcarID, carID, carName, TcarType, carType;
         double carPrice;
+        boolean isDuplicate = false;
 
         System.out.print("\n=================================================");
         System.out.print("\n                   ADD NEW CAR");
         System.out.print("\n=================================================");
 
-        System.out.print("\nEnter Car ID                  : ");
-        carID = input.nextLine();
+        while (true) {
+            System.out.print("\nEnter Car ID                  : ");
+            TcarID = input.nextLine();
+
+            for (int i = 0; i < carCount; i++) {
+                if (cars[i].carID.equals(TcarID)) {
+                    isDuplicate = true;
+                    System.out.print("Error! Car ID already exists!\n\n");
+                    break;
+                } 
+            }
+
+            if (!isDuplicate) {
+                carID = TcarID;
+                break;
+            }
+        }
 
         System.out.print("Enter Car Name                : ");
         carName = input.nextLine();
@@ -143,8 +165,32 @@ public class OwnerSystem {
 
         System.out.print("\nCar added successfully!\n");
 
-        cars[carCount] = new Car(carID, carName, carType, carPrice, false);
+        cars[carCount] = new Car(carID, carName, carType, carPrice, true);
 
         carCount++;
+    }
+
+    void displayAllCars() {
+        String status;
+        int totalCar = 0;
+
+        System.out.print("\n========================================================================================");
+        System.out.printf("\n%-4s %-10s %-18s %-12s %-15s %-10s", "No", "Car ID", "Car Name", "Type", "Price/Day", "Status");
+        System.out.print("\n========================================================================================");
+
+        for (int i = 0; i < carCount; i++) {
+            if (cars[i].isAvailable) {
+                status = "Available";
+            } else {
+                status = "Rented";
+            }
+            
+            System.out.printf("\n%-4s %-10s %-18s %-12s RM%-15.2f %-10s", (i + 1), cars[i].carID, cars[i].carName, cars[i].carType, cars[i].pricePerDay, status);
+
+            totalCar++;
+        }
+
+        System.out.print("\n========================================================================================");
+        System.out.print("\nTotal Cars : " + totalCar + "\n\n");
     }
 }
