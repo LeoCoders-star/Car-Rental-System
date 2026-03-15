@@ -58,6 +58,7 @@ public class OwnerSystem {
             System.out.print("\n1. Add New Car");
             System.out.print("\n2. Display All Cars");
             System.out.print("\n3. Update Car");
+            System.out.print("\n4. Delete Car");
             System.err.print("\n8. Logout");
             System.out.print("\n=================================================");
 
@@ -83,6 +84,10 @@ public class OwnerSystem {
 
                 case 3:
                     updateCar();
+                    break;
+
+                case 4:
+                    deleteCar();
                     break;
 
                 case 8:
@@ -201,8 +206,8 @@ public class OwnerSystem {
 
     void updateCar() {
         Scanner input = new Scanner(System.in);
-        String carID, newCarName, TnewCarType, newCarType;
-        double newCarPrice;
+        String carID, newCarName, TnewCarType, newCarType = "0";
+        double newCarPrice = 0;
         int index = -1;
 
         System.out.print("\n=================================================");
@@ -235,27 +240,26 @@ public class OwnerSystem {
             newCarName = input.nextLine();
 
             while (true) {
-                System.out.print("\nEnter new Car Type");
+                System.out.print("Enter new Car Type");
                 System.out.print("\n( Economy / Sedan / Luxury )  : ");
                 TnewCarType = input.nextLine();
-                
-                if (TnewCarType.matches("[a-zA-Z ]+")) {
 
-                    if (TnewCarType.equalsIgnoreCase("economy")) {
-                        newCarType = "Economy";
-                        break;
-                    } else if (TnewCarType.equalsIgnoreCase("sedan")) {
-                        newCarType = "Sedan";
-                        break;
-                    } else if (TnewCarType.equalsIgnoreCase("luxury")) {
-                        newCarType = "Luxury";
-                        break;
-                    } else {
-                        System.out.print("Error! Car type don't have...\n");
-                    }
+                if (TnewCarType.equals("0")) {
+                    newCarType = "0";
+                    break;
+                }
 
+                if (TnewCarType.equalsIgnoreCase("economy")) {
+                    newCarType = "Economy";
+                    break;
+                } else if (TnewCarType.equalsIgnoreCase("sedan")) {
+                    newCarType = "Sedan";
+                    break;
+                } else if (TnewCarType.equalsIgnoreCase("luxury")) {
+                    newCarType = "Luxury";
+                    break;
                 } else {
-                    System.out.print("Invalid! Only words...\n");
+                    System.out.print("Error! Car type don't have...\n");
                 }
             }
 
@@ -265,6 +269,7 @@ public class OwnerSystem {
 
                 if (input.hasNextDouble()) {
                     newCarPrice = input.nextDouble();
+                    input.nextLine();
 
                     if (newCarPrice < 0) {
                         System.out.print("Error! Price can't be negative...\n");
@@ -295,5 +300,58 @@ public class OwnerSystem {
             System.out.print("\nInvalid! Car Not Found...\n");
         }
 
+    }
+
+    void deleteCar() {
+        Scanner input = new Scanner(System.in);
+        String carID, carDelete;
+        int index = -1;
+        boolean isDelete = false;
+
+        System.out.print("\n=================================================");
+        System.out.print("\n                   DELETE CAR");
+        System.out.print("\n=================================================");
+
+        System.out.print("\nEnter Car ID to delete : ");
+        carID = input.nextLine();
+
+        for (int i = 0; i < carCount; i++) {
+            if (cars[i].carID.equals(carID)) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index != -1) {
+            System.out.print("\nCar Found");
+            System.out.print("\nCar ID        : " + cars[index].carID);
+            System.out.print("\nCar Name      : " + cars[index].carName);
+            System.out.print("\nCar type      : " + cars[index].carType);
+            System.out.printf("\nPrice/Day     : RM%.2f", cars[index].pricePerDay);
+
+            System.out.print("\n\nAre you sure to delete this car? (Y/N) : ");
+            carDelete = input.nextLine();
+
+            if (carDelete.equalsIgnoreCase("y")) {
+                isDelete = true;
+            } else {
+                isDelete = false;
+            }
+
+        } else {
+            System.out.print("\nInvalid! Car not found...\n");
+        }
+
+        if (isDelete) {
+            for (int i = index; i < (carCount - 1); i++) {
+                cars[i] = cars[i + 1];
+            }
+
+            System.out.print("\nCar deleted successfully!\n");
+
+            carCount--;
+        } else {
+            System.out.print("\nCar ID [ " + cars[index].carID + "] not delete by ADMIN\n");
+        }
     }
 }
