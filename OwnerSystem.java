@@ -201,7 +201,7 @@ public class OwnerSystem {
 
     void updateCar() {
         Scanner input = new Scanner(System.in);
-        String carID, newCarName, newCarType;
+        String carID, newCarName, TnewCarType, newCarType;
         double newCarPrice;
         int index = -1;
 
@@ -234,11 +234,49 @@ public class OwnerSystem {
             System.out.print("\nEnter new Car Name : ");
             newCarName = input.nextLine();
 
-            System.out.print("\nEnter new Car Type : ");
-            newCarType = input.nextLine();
+            while (true) {
+                System.out.print("\nEnter new Car Type");
+                System.out.print("\n( Economy / Sedan / Luxury )  : ");
+                TnewCarType = input.nextLine();
+                
+                if (TnewCarType.matches("[a-zA-Z ]+")) {
 
-            System.out.print("\nEnter new Price : ");
-            newCarPrice = input.nextDouble();
+                    if (TnewCarType.equalsIgnoreCase("economy")) {
+                        newCarType = "Economy";
+                        break;
+                    } else if (TnewCarType.equalsIgnoreCase("sedan")) {
+                        newCarType = "Sedan";
+                        break;
+                    } else if (TnewCarType.equalsIgnoreCase("luxury")) {
+                        newCarType = "Luxury";
+                        break;
+                    } else {
+                        System.out.print("Error! Car type don't have...\n");
+                    }
+
+                } else {
+                    System.out.print("Invalid! Only words...\n");
+                }
+            }
+
+            while (true) {
+                System.out.print("Enter new Price : ");
+
+
+                if (input.hasNextDouble()) {
+                    newCarPrice = input.nextDouble();
+
+                    if (newCarPrice < 0) {
+                        System.out.print("Error! Price can't be negative...\n");
+                    } else {
+                        break;
+                    }
+
+                } else {
+                    System.out.print("Invalid! Only number...\n");
+                    input.next();
+                }
+            }
 
             if (!newCarName.equals("0")) {
                 cars[index].carName = newCarName;
