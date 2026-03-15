@@ -57,6 +57,7 @@ public class OwnerSystem {
             System.out.print("\n=================================================");
             System.out.print("\n1. Add New Car");
             System.out.print("\n2. Display All Cars");
+            System.out.print("\n3. Update Car");
             System.err.print("\n8. Logout");
             System.out.print("\n=================================================");
 
@@ -78,6 +79,10 @@ public class OwnerSystem {
 
                 case 2:
                     displayAllCars();
+                    break;
+
+                case 3:
+                    updateCar();
                     break;
 
                 case 8:
@@ -192,5 +197,65 @@ public class OwnerSystem {
 
         System.out.print("\n========================================================================================");
         System.out.print("\nTotal Cars : " + totalCar + "\n\n");
+    }
+
+    void updateCar() {
+        Scanner input = new Scanner(System.in);
+        String carID, newCarName, newCarType;
+        double newCarPrice;
+        int index = -1;
+
+        System.out.print("\n=================================================");
+        System.out.print("\n                   UPDATE CAR");
+        System.out.print("\n=================================================");
+
+        System.out.print("\nEnter Car ID to Update : ");
+        carID = input.nextLine();
+
+        for (int i = 0; i < carCount; i++) {
+            if (cars[i].carID.equals(carID)) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index != -1) {
+            System.out.print("\nCar Found");
+            System.out.print("\n-------------------------------------------------");
+
+            System.out.print("\nCar ID             : " + cars[index].carID);
+            System.out.print("\nCar Name           : " + cars[index].carName);
+            System.out.print("\nCar Type           : " + cars[index].carType);
+            System.out.printf("\nPrice/Day          : RM%.2f", cars[index].pricePerDay);
+            System.out.print("\n-------------------------------------------------");
+
+            System.out.print("\nEnter ' 0 ' if don't want to change the data.\n");
+
+            System.out.print("\nEnter new Car Name : ");
+            newCarName = input.nextLine();
+
+            System.out.print("\nEnter new Car Type : ");
+            newCarType = input.nextLine();
+
+            System.out.print("\nEnter new Price : ");
+            newCarPrice = input.nextDouble();
+
+            if (!newCarName.equals("0")) {
+                cars[index].carName = newCarName;
+            }
+
+            if (!newCarType.equals("0")) {
+                cars[index].carType = newCarType;
+            }
+
+            if (newCarPrice != 0) {
+                cars[index].pricePerDay = newCarPrice;
+            }
+
+            System.out.print("\nCar updated successfully!\n");
+        } else {
+            System.out.print("\nInvalid! Car Not Found...\n");
+        }
+
     }
 }
