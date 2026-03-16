@@ -50,10 +50,35 @@ public class CustomerSystem {
     }
 
     void customerLogin() {
+
+        Scanner input = new Scanner(System.in);
+        String customerUserName;
+        int customerPassword;
+
         System.out.print("\n=================================================");
         System.out.print("\n                CUSTOMER LOGIN");
         System.out.print("\n=================================================");
+
+        
         System.out.print("\nEnter Username : ");
+        customerUserName = input.nextLine();
+
         System.out.print("Enter Password : ");
+        customerPassword = input.nextInt();
+
+        if (CarRentalSystem.customerCount == 0) {
+            System.out.print("\nInvalid! Login Unsuccessful...\n");
+            return;
+        }
+
+        for (int i = 0; i < CarRentalSystem.customerCount; i ++) {
+            if ( (CarRentalSystem.customers[i].customerUserName.equals(customerUserName) ) && (CarRentalSystem.customers[i].customerPassword == customerPassword) ) {
+                System.out.print("\nLogin Successful!");
+                System.out.print("\nWelcome, " + CarRentalSystem.customers[i].customerName + "\n");
+            } else {
+                System.out.print("\nInvalid! Login Unsuccessful...\n");
+                return;
+            }
+        }
     }
 }
